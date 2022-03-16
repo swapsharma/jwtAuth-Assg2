@@ -26,7 +26,7 @@ public class EmployeeService implements UserDetailsService {
     }
 
     public Employee getUserById(String employeeId) {
-        return employeeRepository.getById(employeeId);
+        return employeeRepository.findById(employeeId).get();
     }
 
     public Employee createNewUser(Employee employee) {
@@ -36,17 +36,18 @@ public class EmployeeService implements UserDetailsService {
 
     public Employee updateUser(Employee updatedUser) {
         String employeeId = updatedUser.getEmployeeId();
-        Employee employee = employeeRepository.getById(employeeId);
+        Employee employee = employeeRepository.findById(employeeId).get();
         employee.setEmployeeName(updatedUser.getEmployeeName());
         employee.setFirstName(updatedUser.getFirstName());
         employee.setPassword(updatedUser.getPassword());
         employee.setDesignation(updatedUser.getDesignation());
+        employeeRepository.save(employee);
         return employee;
     }
 
     public String deleteUser(String employeeId) {
 
-        Employee employee = employeeRepository.getById(employeeId);
+        Employee employee = employeeRepository.findById(employeeId).get();
         employeeRepository.delete(employee);
         return "User has been removed!";
     }
